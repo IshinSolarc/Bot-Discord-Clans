@@ -1,7 +1,7 @@
 import discord
 import google_api_access
 
-roles_staffs_id: list = [915042701760667688, 916498411556077588, 959441903630315592, 961828824675409950]
+roles_staffs_id: list = [994996873448398960, 995002655439061033]
 
 staffs: dict = {
         914774637563494440: 'Lunefa',
@@ -46,6 +46,7 @@ class MyClient(discord.Client):
 
                 if is_staff(message.author) == False:
                     await message.reply('Você não tem permissão para usar este comando!')
+                    return
 
                 content = message.content.replace('!stafflvl ', '')
                 content = content.split(' ')
@@ -72,6 +73,7 @@ class MyClient(discord.Client):
 
                 if is_staff(message.author) == False:
                     await message.reply('Você não tem permissão para usar este comando!')
+                    return
     
                 content = message.content.replace('!staffpower ', '')
                 content = content.split(' ')

@@ -15,7 +15,7 @@ SERVICE_ACCOUNT_FILE = 'gapi-key.json'
 
 my_credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
-MY_SHEET = '' [ID planilha]
+MY_SHEET = '' #[ID planilha]
 
 
 service = build('sheets', 'v4', credentials=my_credentials)
@@ -56,37 +56,19 @@ def att_value(nick, value, type):
                 return True
     return False
 
-def add_User(nick, classe, lvl, power, id_discord):
-    result = sheet.values().get(spreadsheetId = MY_SHEET, range=('Players!A4:D502')).execute()
+def add_User(nick, classe, lvl, power, clan, id_discord):
+
+    result = sheet.values().get(spreadsheetId = MY_SHEET, range=(f'{clan}!A4:D502')).execute()
     values = result.get('values', [])
     for row in values:
         if row == []:
             continue
         if row[0].lower() == nick.lower():
-            return False
+            return 'Usuario já existe'
+
     values.append([nick, classe, lvl, power, id_discord])
     try:
         sheet.values().update(spreadsheetId = MY_SHEET, range=(clan + '!A4:E53'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
-        print('Adicionado com sucesso!')
-        return True
+        return 'Adicionado com sucesso!'
     except:
-        print('Erro ao adicionar usuario')
-        return False
-
-def att_Tag(nick, tag_clan):
-    if tag_clan in lista_clans:
-        #procura o nick na planilha de players
-        result = sheet.values().get(spreadsheetId = MY_SHEET, range=('Players!A4:D502')).execute()
-        values = result.get('values', [])
-        for row in values:
-            if row == []:
-                continue
-            if row[0].lower() == nick.lower():
-                row[] = tag_clan
-                print('Atualizando tag: ' + tag_clan + ' no nick: ' + nick)
-                try:
-                    sheet.values().update(spreadsheetId = MY_SHEET, range=(clan + '!A4:E53'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
-                    print('Atualizado com sucesso!')
-                except:
-                    print('Erro ao atualizar tag')
-                return True
+        return 'Erro à adicionar usuario'

@@ -15,7 +15,7 @@ SERVICE_ACCOUNT_FILE = 'gapi-key.json'
 
 my_credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
-MY_SHEET = '1715CV0hNEcMNYEClRY77BUa_0ysGObD5Ek4As_Jp4Yo' #[ID planilha]
+MY_SHEET = '1gWjLgRjgnwJ5kubsd3xxGj6MSfUr8esfaZp-synbgI4' #[ID planilha]
 
 
 service = build('sheets', 'v4', credentials=my_credentials)

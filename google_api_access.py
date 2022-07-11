@@ -58,13 +58,8 @@ def att_value(nick, value, type):
 
 def add_User(nick, classe, lvl, power, clan, id_discord):
 
-    result = sheet.values().get(spreadsheetId = MY_SHEET, range=(f'{clan}!A4:D502')).execute()
+    result = sheet.values().get(spreadsheetId = MY_SHEET, range=(clan + 'A4:D502')).execute()
     values = result.get('values', [])
-    for row in values:
-        if row == []:
-            continue
-        if row[0].lower() == nick.lower():
-            return 'Usuario já existe'
 
     values.append([nick, classe, lvl, power, id_discord])
     try:

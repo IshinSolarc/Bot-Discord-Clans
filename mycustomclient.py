@@ -31,7 +31,8 @@ class MyClient(discord.Client):
 
     async def log(self, message):
         channel = self.get_channel(canais['Logs'])
-        await channel.send(message)
+        print(channel.name)
+        await channel.send(content = message)
         return
 
     async def on_message(self, message):
@@ -148,19 +149,18 @@ class MyClient(discord.Client):
 
             self.log(log)
 
-        #staff adiciona o usuario a planilha com entradas de nick, classe, lvl, power e clan
+        #staff adiciona o usuario a planilha com entradas de nick, classe, lvl, power, clan e discord
         if message.content.startswith('!adduser') and is_staff(message.author) == True:
                 
                 content = message.content.replace('!adduser ', '')
                 content = content.split(' ')
     
-                if len(content) != 5:
-                    await message.reply('Como usar: !adduser <Nick> <Classe> <LVL> <POWER> <Clan>')
+                if len(content) != 6:
+                    await message.reply('Como usar: !adduser <Nick> <Classe> <LVL> <POWER> <Clan> <Discord>')
                     return
     
                 try:
-                    user_discord = message.author.name + '#' + message.author.discriminator
-                    retorno = google_api_access.add_user(content[0], content[1], content[2], content[3], content[4], user_discord)
+                    retorno = google_api_access.add_user(content[0], content[1], content[2], content[3], content[4], content[5])
                     if retorno == 'Adicionado com sucesso!':
                         await message.reply('Usuário adicionado com sucesso!')
                         log = f'{message.author.name} adicionou o usuário {content[0]} a planilha!'

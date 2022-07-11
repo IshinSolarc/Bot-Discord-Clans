@@ -160,9 +160,7 @@ class MyClient(discord.Client):
                     return
     
                 try:
-                    print(content)
                     retorno = google_api_access.add_user(content[0], content[1], content[2], content[3], content[4], content[5])
-                    print(retorno)
                     if retorno == 'Adicionado com sucesso!':
                         await message.reply('Usuário adicionado com sucesso!')
                         log = f'{message.author.name} adicionou o usuário {content[0]} a planilha!'

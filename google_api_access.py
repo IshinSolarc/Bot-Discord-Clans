@@ -58,12 +58,10 @@ def att_value(nick, value, type):
 
 def add_User(nick, classe, lvl, power, clan, id_discord):
 
-    result = sheet.values().get(spreadsheetId = MY_SHEET, range=(clan + 'A4:D502')).execute()
+    result = sheet.values().get(spreadsheetId = MY_SHEET, range=(clan + 'A4:E53')).execute()
     values = result.get('values', [])
-    dados = [nick, classe, lvl, power, id_discord]
-    print(dados)
+
     values.append([nick, classe, lvl, power, id_discord])
-    print(values)
     try:
         sheet.values().update(spreadsheetId = MY_SHEET, range=(clan + '!A4:E53'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
         return 'Adicionado com sucesso!'

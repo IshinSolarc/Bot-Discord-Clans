@@ -62,9 +62,10 @@ def add_User(nick, classe, lvl, power, clan, id_discord):
     values = result.get('values', [])
     
     for row in values:
-        if row[0].lower() == nick.lower():
-            print('Usuario ja existe!')
-            return False
+        if row != []:
+            if row[0].lower() == nick.lower():
+                print('Usuario ja existe!')
+                return False
 
     for row in values:
         if row == []:

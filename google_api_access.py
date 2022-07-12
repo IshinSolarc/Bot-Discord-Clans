@@ -60,8 +60,17 @@ def add_User(nick, classe, lvl, power, clan, id_discord):
 
     result = sheet.values().get(spreadsheetId = MY_SHEET, range=(clan + 'A4:E53')).execute()
     values = result.get('values', [])
+    
+    for row in values:
+        if row[0].lower() == nick.lower():
+            print('Usuario ja existe!')
+            return False
 
-    values.append([nick, classe, lvl, power, id_discord])
+    for row in values:
+        if row == []:
+            row = [nick, classe, lvl, power, id_discord]
+            break
+
     try:
         sheet.values().update(spreadsheetId = MY_SHEET, range=(clan + '!A4:E53'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
         return 'Adicionado com sucesso!'

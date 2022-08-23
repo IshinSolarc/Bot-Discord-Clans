@@ -1,15 +1,7 @@
 import discord
 import google_api_access
 
-roles_staffs_id: list = [994996873448398960, 995002655439061033]
-
-staffs: dict = {
-        914774637563494440: 'Lunefa',
-        270812637242195968: 'IshinSolarc',
-        333824903629373443: 'Himura',
-        90622406988693504: 'Arcanine',
-        433013140557398059: 'Khayows'
-        }
+roles_staffs_id: list = [994996873448398960, 999651297303212092]
 
 canais: dict = {
     'AttLVL' : 995140258389839964,
@@ -111,7 +103,7 @@ class MyClient(discord.Client):
                 novo_nick = content[0] + ' - ' + nick_atual[1]
 
                 if nick_atual[0].isdigit() == False:
-                    await message.reply('Seu nick não está nos padrões do discord Callidus, passe pela identificação.')
+                    await message.reply('Seu nick não está nos padrões do discord Snack Opal Taurus, passe pela identificação.')
                     return
 
                 await message.author.edit(nick = novo_nick)
@@ -120,7 +112,7 @@ class MyClient(discord.Client):
                 log = f'{message.author.name} alterou o lvl de {nick_atual[1]} para {content[0]}'
 
             except:
-                await message.reply('Seu nick não está nos padrões do discord Callidus, passe pela identificação.')
+                await message.reply('Seu nick não está nos padrões do discord Snack Opal Taurus, passe pela identificação.')
                 log = f'{message.author.name} tentou alterar o lvl de {nick_atual[1]} para {content[0]} e um erro fatal ocorreu!'
 
         #bot atualiza o power do usuario
@@ -143,7 +135,7 @@ class MyClient(discord.Client):
                     await message.reply(nick_atual[1] + ' é um nome não encontrado na planilha, contate a staff!')
                     log = f'{message.author.name} tentou alterar o power para {content[0]}, porém não estava na planilha!'
             except:
-                await message.reply('Um erro fatal ocorreu!')
+                await message.reply('Um erro fatal ocorreu, seu nick está no padrão do discord?')
                 log = f'{message.author.name} tentou alterar o power de {nick_atual[1]} para {content[0]} e um erro fatal ocorreu!'
                 return
 

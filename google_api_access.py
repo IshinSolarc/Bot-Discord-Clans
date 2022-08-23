@@ -15,12 +15,12 @@ SERVICE_ACCOUNT_FILE = 'gapi-key.json'
 
 my_credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
-MY_SHEET = '1gWjLgRjgnwJ5kubsd3xxGj6MSfUr8esfaZp-synbgI4' #[ID planilha]
+MY_SHEET = '1sM7McY5Uknrbk773P-2nsr3gbxWGnJ6-FopIvAQYPFo' #[ID planilha]
 
 
 service = build('sheets', 'v4', credentials=my_credentials)
 
-lista_clans = ['MﾑDBunny', 'BUNNY', 'M4D']
+lista_clans = []
 
 sheet = service.spreadsheets()
 
@@ -28,37 +28,35 @@ sheet = service.spreadsheets()
 #retorna True se usuario existe, False se não existe
 
 def att_value(nick, value, type):
-
-    for clan in lista_clans:
-        result = sheet.values().get(spreadsheetId = MY_SHEET, range=(clan + '!A4:E53')).execute()
-        values = result.get('values', [])
-        for row in values:
-            if row == []:
-                continue
-            if row[0].lower() == nick.lower():
-                if type == 'lvl':
-                    try:
-                        row[2] = value
-                    except:
-                        row.insert(2, value)
-                elif type == 'power':
-                    try:
-                        row[3] = value
-                    except:
-                        row.insert(3, value)
-
-                print('Atualizando valor: ' + value + ' do tipo ' + type + ' no nick: ' + nick)
+    result = sheet.values().get(spreadsheetId = MY_SHEET, range=('Players' + 'A4:F502')).execute()
+    values = result.get('values', [])
+    for row in values:
+        if row == []:
+            continue
+        if row[0].lower() == nick.lower():
+            if type == 'lvl':
                 try:
-                    sheet.values().update(spreadsheetId = MY_SHEET, range=(clan + '!A4:E53'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
-                    print('Atualizado com sucesso!')
+                    row[2] = value
                 except:
-                    print('Erro ao atualizar valor')
-                return True
+                    row.insert(2, value)
+            elif type == 'power':
+                try:
+                    row[3] = value
+                except:
+                    row.insert(3, value)
+
+            print('Atualizando valor: ' + value + ' do tipo ' + type + ' no nick: ' + nick)
+            try:
+                sheet.values().update(spreadsheetId = MY_SHEET, range=('Players' + '!A4:E53'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
+                print('Atualizado com sucesso!')
+            except:
+                print('Erro ao atualizar valor')
+            return True
     return False
 
 def add_User(nick, classe, lvl, power, clan, id_discord):
 
-    result = sheet.values().get(spreadsheetId = MY_SHEET, range=(clan + 'A4:E53')).execute()
+    result = sheet.values().get(spreadsheetId = MY_SHEET, range=('Players' + 'A4:F502')).execute()
     values = result.get('values', [])
     
     for row in values:
@@ -69,11 +67,11 @@ def add_User(nick, classe, lvl, power, clan, id_discord):
 
     for row in values:
         if row == []:
-            row = [nick, classe, lvl, power, id_discord]
+            row = [nick, classe, lvl, power, id_discord, clan]
             break
 
     try:
-        sheet.values().update(spreadsheetId = MY_SHEET, range=(clan + '!A4:E53'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
+        sheet.values().update(spreadsheetId = MY_SHEET, range=('Players' + 'A4:F502'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
         return 'Adicionado com sucesso!'
     except:
         return 'Erro à adicionar usuario'

@@ -9,5 +9,3 @@ if __name__ == '__main__':
 
     mycustomclient = MyClient()
     mycustomclient.run(token)
-
-

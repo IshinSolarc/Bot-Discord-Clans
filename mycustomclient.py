@@ -21,15 +21,7 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print(f'Logado como {self.user}!')
 
-    async def log(self, message):
-        channel = self.get_channel(canais['Logs'])
-        print(channel.name)
-        await channel.send(content = message)
-        return
-
     async def on_message(self, message):
-
-        log: str = ''
 
         #bot ignora proprias mensagens
         if message.author == self.user:
@@ -54,8 +46,6 @@ class MyClient(discord.Client):
                         await message.reply('Nick incorreto ou nick inexistente na planilha!')
                     else:
                         await message.reply('LVL atualizado com sucesso!')
-                    
-                    
                 except:
                     await message.reply('Um erro fatal ocorreu!')
                 
@@ -81,13 +71,9 @@ class MyClient(discord.Client):
                         await message.reply('Nick incorreto ou nick inexistente na planilha!')
                     else:
                         await message.reply('Power atualizado com sucesso!')
-                        log = f'{message.author.name} alterou o power de {content[0]} para {content[1]}'
                 except:
-                    log = f'{message.author.name} tentou alterar o power de {content[0]} para {content[1]} e um erro fatal ocorreu!'
-
-                self.log(log)
-
-                
+                    return
+        
         #bot atualiza o level do usuario
         if message.content.startswith('!attlvl') and message.channel.id == canais['AttLVL']: 
 
@@ -109,11 +95,9 @@ class MyClient(discord.Client):
                 await message.author.edit(nick = novo_nick)
                 await message.reply('LVL atualizado com sucesso!')
                 google_api_access.att_value(nick_atual[1], content[0], 'lvl')
-                log = f'{message.author.name} alterou o lvl de {nick_atual[1]} para {content[0]}'
 
             except:
                 await message.reply('Seu nick não está nos padrões do discord Snack Opal Taurus, passe pela identificação.')
-                log = f'{message.author.name} tentou alterar o lvl de {nick_atual[1]} para {content[0]} e um erro fatal ocorreu!'
 
         #bot atualiza o power do usuario
         if message.content.startswith('!attpower') and message.channel.id == canais['AttPower']:
@@ -130,16 +114,12 @@ class MyClient(discord.Client):
                 retorno = google_api_access.att_value(nick_atual[1], content[0], 'power')
                 if retorno == True:
                     await message.reply('Power atualizado com sucesso!')
-                    log = f'{message.author.name} alterou o power de {nick_atual[1]} para {content[0]}'
                 else:
                     await message.reply(nick_atual[1] + ' é um nome não encontrado na planilha, contate a staff!')
-                    log = f'{message.author.name} tentou alterar o power para {content[0]}, porém não estava na planilha!'
             except:
                 await message.reply('Um erro fatal ocorreu, seu nick está no padrão do discord?')
-                log = f'{message.author.name} tentou alterar o power de {nick_atual[1]} para {content[0]} e um erro fatal ocorreu!'
                 return
 
-            self.log(log)
 
         #staff adiciona o usuario a planilha com entradas de nick, classe, lvl, power, clan e discord
         if message.content.startswith('!adduser') and is_staff(message.author) == True:
@@ -152,21 +132,16 @@ class MyClient(discord.Client):
                     return
     
                 try:
+                    print('suco')
                     retorno = google_api_access.add_user(content[0], content[1], content[2], content[3], content[4], content[5])
+                    print('sucll')
                     if retorno == 'Adicionado com sucesso!':
                         await message.reply('Usuário adicionado com sucesso!')
-                        log = f'{message.author.name} adicionou o usuário {content[0]} a planilha!'
                     elif retorno == 'Usuário já existe!':
                         await message.reply('Usuário já existe na planilha!')
-                        log = f'{message.author.name} tentou adicionar o usuário {content[0]} a planilha, porém ele já existe!'
                 except:
                     await message.reply('Um erro fatal ocorreu!')
-                    log = f'{message.author.name} tentou adicionar o usuário {content[0]} a planilha e um erro fatal ocorreu!'
                     return
-    
-                self.log(log)
-            
-
 
         #bot indica que está online
         if message.content.startswith('!test'):

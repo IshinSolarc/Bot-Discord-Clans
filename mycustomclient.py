@@ -97,7 +97,7 @@ class MyClient(discord.Client):
                 google_api_access.att_value(nick_atual[1], content[0], 'lvl')
 
             except:
-                await message.reply('Seu nick não está nos padrões do discord Snack Opal Taurus, passe pela identificação.')
+                await message.reply('Erro ao atualizar na planilha.')
 
         #bot atualiza o power do usuario
         if message.content.startswith('!attpower') and message.channel.id == canais['AttPower']:
@@ -122,19 +122,18 @@ class MyClient(discord.Client):
 
 
         #staff adiciona o usuario a planilha com entradas de nick, classe, lvl, power, clan e discord
-        if message.content.startswith('!adduser') and is_staff(message.author) == True:
+        if message.content.startswith('!adduser') and is_staff(message.author):
                 
                 content = message.content.replace('!adduser ', '')
                 content = content.split(' ')
     
                 if len(content) != 6:
-                    await message.reply('Como usar: !adduser <Nick> <Classe> <LVL> <POWER> <Clan> <Discord>')
+                    await message.reply('Como usar: !adduser <Nick> <Classe> <LVL> <POWER> <Discord> <Clan>')
                     return
-    
+
+                print(content)
                 try:
-                    print('suco')
-                    retorno = google_api_access.add_user(content[0], content[1], content[2], content[3], content[4], content[5])
-                    print('sucll')
+                    retorno = google_api_access.add_User(content[0], content[1], content[2], content[3], content[4], content[5])
                     if retorno == 'Adicionado com sucesso!':
                         await message.reply('Usuário adicionado com sucesso!')
                     elif retorno == 'Usuário já existe!':

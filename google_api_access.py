@@ -1,11 +1,6 @@
 from __future__ import print_function
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-
 from google.oauth2 import service_account
 
 
@@ -17,8 +12,9 @@ my_credentials = service_account.Credentials.from_service_account_file(SERVICE_A
 
 MY_SHEET = '1sM7McY5Uknrbk773P-2nsr3gbxWGnJ6-FopIvAQYPFo' #[ID planilha]
 
-
 service = build('sheets', 'v4', credentials=my_credentials)
+
+THE_RANGE = 'Players!A4:F200'
 
 lista_clans = []
 
@@ -28,7 +24,7 @@ sheet = service.spreadsheets()
 #retorna True se usuario existe, False se não existe
 
 def att_value(nick, value, type):
-    result = sheet.values().get(spreadsheetId = MY_SHEET, range=('Players' + 'A4:F502')).execute()
+    result = sheet.values().get(spreadsheetId=MY_SHEET, range=(THE_RANGE)).execute()
     values = result.get('values', [])
     for row in values:
         if row == []:
@@ -47,31 +43,27 @@ def att_value(nick, value, type):
 
             print('Atualizando valor: ' + value + ' do tipo ' + type + ' no nick: ' + nick)
             try:
-                sheet.values().update(spreadsheetId = MY_SHEET, range=('Players' + '!A4:E53'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
+                sheet.values().update(spreadsheetId = MY_SHEET, range=(THE_RANGE), valueInputOption='USER_ENTERED', body={'values': values}).execute()
                 print('Atualizado com sucesso!')
             except:
                 print('Erro ao atualizar valor')
             return True
     return False
 
-def add_User(nick, classe, lvl, power, clan, id_discord):
-
-    result = sheet.values().get(spreadsheetId = MY_SHEET, range=('Players' + 'A4:F502')).execute()
+def add_User(nick, classe, lvl, power, id_discord, clan):
+    result = sheet.values().get(spreadsheetId = MY_SHEET, range=(THE_RANGE)).execute()
     values = result.get('values', [])
     
     for row in values:
         if row != []:
             if row[0].lower() == nick.lower():
                 print('Usuario ja existe!')
-                return False
+                return 'Usuário já existe!'
 
-    for row in values:
-        if row == []:
-            row = [nick, classe, lvl, power, id_discord, clan]
-            break
+    values.append([nick, classe, lvl, power, id_discord, clan])
 
     try:
-        sheet.values().update(spreadsheetId = MY_SHEET, range=('Players' + 'A4:F502'), valueInputOption='USER_ENTERED', body={'values': values}).execute()
+        sheet.values().update(spreadsheetId = MY_SHEET, range=(THE_RANGE), valueInputOption='USER_ENTERED', body={'values': values}).execute()
         return 'Adicionado com sucesso!'
     except:
         return 'Erro à adicionar usuario'
